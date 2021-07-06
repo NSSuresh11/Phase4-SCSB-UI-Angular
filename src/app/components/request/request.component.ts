@@ -52,6 +52,7 @@ export class RequestComponent implements OnInit,OnDestroy {
   patronBarcodeErrorMessage = false
   itembarcodeVal: TreeNode[];
   deliveryLocVal: any[];
+  requestTypeVal: any[];
   eddshow = false;
   startPageErrorMessage = false;
   endPageErrorMessage = false;
@@ -184,6 +185,7 @@ export class RequestComponent implements OnInit,OnDestroy {
     this.requestTypes = [];
     this.institutions = [];
     this.deliveryLocVal = [];
+    this.requestTypeVal = [];
     this.createRequestError = false;
     this.create_request = true;
     this.requestService.loadCreateRequest().subscribe(
@@ -419,6 +421,13 @@ export class RequestComponent implements OnInit,OnDestroy {
             return [data, del[data]];
           });
         }
+        var reqtype = this.itembarcodeVal['requestType'];
+        if (reqtype != null) {
+          this.requestTypeVal = ['', ''];
+          this.requestTypeVal = Object.keys(reqtype).map(function (data) {
+            return [data, reqtype[data]];
+          });
+        }
       },
       (error) => {
         this.dashBoardService.errorNavigation();
@@ -487,6 +496,10 @@ export class RequestComponent implements OnInit,OnDestroy {
         var del = res['deliveryLocation'];
         this.deliveryLocVal = Object.keys(del).map(function (data) {
           return [data, del[data]];
+        });
+        var reqtype = res['requestType'];
+        this.requestTypeVal = Object.keys(reqtype).map(function (data) {
+          return [data, reqtype[data]];
         });
       },
       (error) => {
@@ -801,11 +814,13 @@ export class RequestComponent implements OnInit,OnDestroy {
   }
   resetDefaults() {
     this.deliveryLocVal = [];
+    this.requestTypeVal = [];
     this.eddshow = false;
     this.initialload();
   }
   differentpatron() {
     this.deliveryLocVal = [];
+    this.requestTypeVal = [];
     this.eddshow = false;
     this.createsubmit = false;
     this.storageLocation = '';
@@ -834,6 +849,8 @@ export class RequestComponent implements OnInit,OnDestroy {
         this.ArticleAuthor = '';
         this.ChapterTitle = '';
         this.deliveryLocVal = [];
+        this.requestTypeVal = [];
+
       },
       (error) => {
         this.dashBoardService.errorNavigation();
